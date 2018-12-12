@@ -1,11 +1,14 @@
-var inputUrl = 'https://adventofcode.com/2018/day/xx/input';
+var path = '/201X/day/xx/input';
+
+var testInput = '';
 
 var parseInput = function(input) {
-  return input.trimEnd('\n');
+  input = testInput;
+  return input.trim().split(',').map(i => parseInt(i));
 }
 
 var solvePart1 = function(data) {
-    
+    console.log(data);
 }
 
 var solvePart2 = function(data) {
@@ -18,8 +21,13 @@ var solve = function(input) {
   console.log('Part 2 Answer: %s', solvePart2(data));
 }
 
-fetch(inputUrl)
-  .then(res => res.text())
-  .then(res => {
-      solve(res);
-  })
+if(!localStorage[path]) {
+  fetch('https://adventofcode.com' + path)
+    .then(res => res.text())
+    .then(txt => {
+        localStorage.setItem(path, txt);
+        solve(txt);
+    });
+} else {
+  solve(localStorage[path]);
+}
