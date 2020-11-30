@@ -1,0 +1,11 @@
+{
+  "name": "aoc-puzzles",
+  "version": "1.0.0",
+  "description": "Advent of Code Puzzle Solutions",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "global": "^4.4.0",
+    "node-fetch": "^2.6.0"
+  }
+}

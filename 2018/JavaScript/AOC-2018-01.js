@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 var inputUrl = 'https://adventofcode.com/2018/day/1/input';
 
 var parseInput = function(input) {
