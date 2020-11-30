@@ -44,26 +44,19 @@ var highScore = function(playerCount, lastPoint) {
     console.log('%i players; last marble is worth %i points', playerCount, lastPoint);
 
     var players = Array.from({ length: playerCount }, p => new player());
-    var currentMarble = new  marble(0);
-
-    //console.log('[-] %s', circle.log);
+    var currentMarble = new marble(0);
 
     for(var m = 1; m <= lastPoint; m++) {
-        var p = m%(playerCount);
+        var p = m%playerCount;
         if(m%23===0) {
             players[p].marbles.push(m);
             currentMarble = currentMarble.score(players[p].marbles);
         } else {
             currentMarble = currentMarble.insert(new marble(m));
         }
-        //console.log('[%i] %s', p == 0 ? playerCount : p, circle.log);
     }
-
-    //console.log('%O', players);
     
     var winner = players.sort((a,b) => b.score - a.score)[0];
-
-    console.log('Winner scores: %i', winner.score);
     
     return winner.score;
 }

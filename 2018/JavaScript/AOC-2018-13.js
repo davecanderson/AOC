@@ -26,28 +26,28 @@ var turns = ['L','S','R'];
 
 var parseInput = function(input) {
   // using trim removes required spaces!
-  var track = input.split('\n').map(l => l.split('')),
-      cars = [];
+  var track = input.split('\n').map(l => l.split('')), cars = [];
+  
   for(var y = 0; y < track.length; y++) {
-        for(var x = 0; x < track[y].length; x++) {
-            var t = track[y][x];
-            if(t == '') continue;
-            if(/[v^<>]/.test(t)) {
-                cars.push({ x, y, direction: t, turn: 0 });
-                switch(t) {
-                    case 'v':
-                    case '^':
-                        track[y][x] = '|';
-                        break;
-                    case '<':
-                    case '>':
-                        track[y][x] = '-';
-                        break;
-                }
-            }
-        }
+    for(var x = 0; x < track[y].length; x++) {
+      var t = track[y][x];
+      if(t == '') continue;
+      if(/[v^<>]/.test(t)) {
+          cars.push({ x, y, direction: t, turn: 0 });
+          switch(t) {
+              case 'v':
+              case '^':
+                  track[y][x] = '|';
+                  break;
+              case '<':
+              case '>':
+                  track[y][x] = '-';
+                  break;
+          }
+      }
     }
-    return { track, cars }
+  }
+  return { track, cars }
 }
 
 var print = function(data) {
@@ -79,7 +79,7 @@ var trainTrack = function(data) {
     var moveCar = function(car, x, y) {
         var t = data.track[y][x];
         if(data.cars.some(c => c.x == x && c.y == y)) {
-            return { x, y } 
+            return { x, y } // car has crashed
         }
         switch(t) {
             case '\\':
@@ -167,7 +167,7 @@ var trainTrack = function(data) {
 
 var solvePart1 = function(data) {
 
-    var track = trainTrack(data), crash, maxIterations = 200, iterations = 0;
+    var track = trainTrack(data), maxIterations = 200, iterations = 0, crash;
 
     while(!crash && iterations < maxIterations) {      
         //print(data);

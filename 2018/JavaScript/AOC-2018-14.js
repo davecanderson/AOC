@@ -22,19 +22,22 @@ var solvePart1 = function(length) {
 }
 
 var solvePart2 = function(find) {
-  var recipies = [3,7], elf1 = 0, elf2 = 1, found = -1, match = [];
-  // adding detection in loop too slow so just create enough recipies
-  while(recipies.length < 50000000) {
-    //console.debug(recipies.split('').map((r,i) => i == elf1 ? '('+r+')' : i == elf2 ? '['+r+']' : ' '+r+' ').join(''));
-    var e1 = recipies[elf1],
-        e2 = recipies[elf2],
-        add = (e1+e2).toString().split('').map(Number);
-    recipies.push(...add);
-    match.push(...add);  
-    elf1 = (elf1 + 1 + e1)%recipies.length; 
-    elf2 = (elf2 + 1 + e2)%recipies.length;
-  }
-  return recipies.join('').indexOf(find);
+   var recipies = [3,7], elf1 = 0, elf2 = 1, found = -1, match = [];
+    while(found < 0) {
+      //console.debug(recipies.split('').map((r,i) => i == elf1 ? '('+r+')' : i == elf2 ? '['+r+']' : ' '+r+' ').join(''));
+      var e1 = recipies[elf1],
+          e2 = recipies[elf2],
+          add = (e1+e2).toString().split('').map(Number);
+      recipies.push(...add);
+      match.push(...add);  
+      elf1 = (elf1 + 1 + e1)%recipies.length; 
+      elf2 = (elf2 + 1 + e2)%recipies.length;
+      found = match.join('').indexOf(find);
+      if(found < 0) {
+        match = match.slice(-5);
+      }
+    }
+    return recipies.join('').indexOf(find);
 }
 
 var solve1 = function(input) {
