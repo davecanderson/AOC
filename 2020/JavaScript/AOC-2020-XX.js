@@ -36,11 +36,12 @@
     }
 
     const test = function () {
-        testPart1(testInput1);
-        testPart2(testInput2);
+        testPart1(parseInput(testInput1));
+        testPart2(parseInput(testInput2));
     }
 
-    const solve = function (data) {
+    const solve = function (input) {
+        var data = parseInput(input);
         console.log('Part 1 Answer: %s', solvePart1(data));
         console.log('Part 2 Answer: %s', solvePart2(data));
     }
@@ -59,6 +60,6 @@
     }
     
     test();
-    run();
+    //run();
 
 })();
