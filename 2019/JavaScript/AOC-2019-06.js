@@ -62,16 +62,15 @@ const getTotalOrbits = function(map) {
   return Object.values(map).map(m => m.orbitCount).reduce((a,c) => c += a);
 }
 
-const getShareOrbit = function(o1, o2) {
-  while(o2.orbits.length) {
-    if(o1.orbit == o2.orbit) return o2.orbit;
-    o2 = o2.orbit;
-  }
-  return o1.orbits.length ? getShareOrbit(o1.orbit, o2) : o1;
+const getSharedOrbit = function(o1, o2) {
+  if(o1.orbit === o2.orbit) return o1.orbit;
+  if(!o1.orbits.includes(o2.orbit)) return getSharedOrbit(o1, o2.orbit);
+  if(!o2.orbits.includes(o1.orbit)) return getSharedOrbit(o1.orbit, o2);
+  getSharedOrbit(o1.orbit, o2.orbit);
 }
 
-const getTransfer = function(o1, o2) {
-  var transfers = [], sharedOrbit = getShareOrbit(o1,o2);
+const getTransfers = function(o1, o2) {
+  var transfers = [], sharedOrbit = getSharedOrbit(o1,o2);
   while(o1.orbit != sharedOrbit) {
     transfers.push(o1.orbit.body + ' to ' + o1.orbit.orbit.body);
     o1 = o1.orbit;
@@ -84,8 +83,8 @@ const getTransfer = function(o1, o2) {
   return transfers;
 }
 
-const getOrbitTransfer = function(map, body1, body2) {
-  return getTransfer(map[body1], map[body2]).length;
+const getOrbitTransfers = function(map, body1, body2) {
+  return getTransfers(map[body1], map[body2]).length;
 }
 
 const solvePart1 = function(data) {
@@ -93,7 +92,7 @@ const solvePart1 = function(data) {
 }
 
 const solvePart2 = function(data) {   
-  return getMinTransfer(data, 'YOU', 'SAN'); 
+  return getTransfers(data, 'YOU', 'SAN'); 
 }
 
 const solve = function() {
@@ -105,6 +104,8 @@ const solve = function() {
 const testPart1 = function() {
   var map = parseInput(testInput1);
 
+  console.log("Test Part 1");
+
   console.assert(map.COM.orbitCount == 0);
   console.assert(map.D.orbitCount == 3);
   console.assert(map.L.orbitCount == 7);
@@ -115,13 +116,19 @@ const testPart1 = function() {
 const testPart2 = function() {
   var map = parseInput(testInput2);
 
-  console.assert(getShareOrbit(map.YOU, map.L).body === 'K');
-  console.assert(getShareOrbit(map.D, map.SAN).body === 'I');
-  console.assert(getShareOrbit(map.YOU, map.SAN).body === 'D');
+  console.log("Test Part 2");
 
-  console.assert(getOrbitTransfer(map, 'G', 'C') == 0);
-  console.assert(getOrbitTransfer(map, 'G', 'D') == 1);
-  console.assert(getOrbitTransfer(map, 'YOU', 'SAN') == 4);   
+  let so1 = getSharedOrbit(map.YOU, map.L);
+  let so2 = getSharedOrbit(map.YOU, map.SAN);
+
+  console.assert(so1.body === 'K', `YOU and L shared orbit ${so1.body} is not equal to K`);
+  console.assert(so2.body === 'D', `YOU and SAN shared orbit ${so2.body} is not equal to D`);
+
+  //let ot1 = getOrbitTransfers(map.YOU, map.L);
+  //let ot2 = getOrbitTransfers(map.YOU, map.SAN);
+
+  //console.assert(ot1 === 0, `YOU and L orbit transfers ${ot1} is not equal to 0`);
+  //console.assert(ot2 === 4, `YOU and SAN orbit transfers ${ot2} is not equal to 4`);   
 }
 
 const test = function () {
@@ -142,7 +149,6 @@ const run = function() {
   }
 }
 
-clear();
 test();
 //run();
 

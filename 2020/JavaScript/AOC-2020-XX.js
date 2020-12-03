@@ -7,13 +7,7 @@
     const path = `${year}/day/${day}/input`;
     const url = `${site}/${path}`;
 
-    if (typeof localStorage === "undefined" || localStorage === null) {
-        var LocalStorage = require('node-localstorage').LocalStorage;
-        localStorage = new LocalStorage('./aoc');
-    }
-
-    const testInput1 = ``;
-    const testInput2 = ``;
+    const testInput = ``;
 
     const parseInput = function (input) {
         return input.trim().split('\n');
@@ -36,14 +30,14 @@
     }
 
     const test = function () {
-        testPart1(parseInput(testInput1));
-        testPart2(parseInput(testInput2));
+        testPart1(parseInput(testInput));
+        //testPart2(parseInput(testInput));
     }
 
     const solve = function (input) {
         var data = parseInput(input);
         console.log('Part 1 Answer: %s', solvePart1(data));
-        console.log('Part 2 Answer: %s', solvePart2(data));
+        //console.log('Part 2 Answer: %s', solvePart2(data));
     }
 
     const run = function () {
