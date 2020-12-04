@@ -49,65 +49,55 @@ eyr:2022
 iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719`;
 
     const parseInput = function (input) {
-        var passports = [[]];
-        input.trim().split('\n').forEach(l => {
-            if(l.trim()=='') {
-                passports.push([]);
-            } else {
-                l.match(/(\w*):([^\s]*)/gm).forEach(m => {
-                    passports[passports.length-1].push(m.trim());                    
-                })
-            }
-        }); 
-        return passports;       
+        return input.split('\n\n')
+            .map(p => p.match(/(\w{3}:[^\s]*)/g))
+            .map(p => p.reduce((a,c) => { 
+                var v = c.split(':'); 
+                a[v[0]] = v[1]; 
+                return a; 
+              }, {})
+            );       
     }
 
     const isValidPassport = function (passport) {
-        if(passport.length == 8) return true;
-        if(passport.length == 7) return passport.map(p => p.split(':')[0] ).indexOf('cid') < 0;
+        var keys = Object.keys(passport);
+        if(keys.length == 8) return true;
+        if(keys.length == 7) return typeof passport['cid'] == 'undefined';
         return false;
     }
 
     const hasValidValues = function  (passport) {
-        var values = {};
-        passport.forEach(p => {
-            var p = p.split(':');
-            values[p[0]] = p[1];
-        })
-        
-        values.byr = parseInt(values.byr);
-        if(isNaN(values.byr) || values.byr < 1920 || values.byr > 2002) return false;
+      
+        passport.byr = parseInt(passport.byr);
+        if(isNaN(passport.byr) || passport.byr < 1920 || passport.byr > 2002) return false;
 
-        values.iyr = parseInt(values.iyr);
-        if(isNaN(values.iyr) || values.iyr < 2010 || values.iyr > 2020) return false;
+        passport.iyr = parseInt(passport.iyr);
+        if(isNaN(passport.iyr) || passport.iyr < 2010 || passport.iyr > 2020) return false;
 
-        values.eyr = parseInt(values.eyr);
-        if(isNaN(values.eyr) || values.eyr < 2020 || values.eyr > 2030) return false;
+        passport.eyr = parseInt(passport.eyr);
+        if(isNaN(passport.eyr) || passport.eyr < 2020 || passport.eyr > 2030) return false;
 
-        if(/\d+(cm|in)/.test(values.hgt)) {
-            var h = parseInt(values.hgt);
-            if(/cm/.test(values.hgt) && (h < 150 || h > 193)) return false;
-            if(/in/.test(values.hgt) && (h < 59 || h > 76)) return false;
+        if(/\d+(cm|in)/.test(passport.hgt)) {
+            var h = parseInt(passport.hgt);
+            if(/cm/.test(passport.hgt) && (h < 150 || h > 193)) return false;
+            if(/in/.test(passport.hgt) && (h < 59 || h > 76)) return false;
         } else {
             return false;
         }
 
-        if(!/#[0-9abcdef]{6}/.test(values.hcl)) return false;
-        if(!/(amb|blu|brn|gry|grn|hzl|oth)/.test(values.ecl)) return false;
-        if(!/^[0-9]{9}$/.test(values.pid)) return false;
+        if(!/#[0-9abcdef]{6}/.test(passport.hcl)) return false;
+        if(!/(amb|blu|brn|gry|grn|hzl|oth)/.test(passport.ecl)) return false;
+        if(!/^[0-9]{9}$/.test(passport.pid)) return false;
 
         return true;
     }
 
     const countValidPassports = function (passports) {
-        return passports.map(p => isValidPassport(p)).reduce((a,c) => { if(c) a++; return a; },0);
+        return passports.filter(p => isValidPassport(p)).length;
     }
 
     const countValidValuePassports = function (passports) {
-        return passports.map(p => { 
-            if(isValidPassport(p)) 
-                return hasValidValues(p); 
-        }).reduce((a,c) => { if(c) a++; return a; },0);
+        return passports.filter(p => isValidPassport(p) && hasValidValues(p)).length;
     }
 
     const solvePart1 = function (data) {
