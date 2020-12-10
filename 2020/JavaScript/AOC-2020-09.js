@@ -32,29 +32,29 @@
         return input.trim().split('\n').map(l => parseInt(l));
     }
 
-    const isValid = function(val, num) {
-        return val.some(v => val.indexOf(num-v) != -1);
+    const isValid = function(vals, num) {
+        return vals.some(v => vals.indexOf(num-v) != -1);
     }
 
-    const areSum = function(val, num) {
+    const areSum = function(vals, num) {
         var acc = 0;
-        for(var i = 0; i < val.length; i++) {
-            acc = val[i];
-            for(var j = i+1; j < val.length; j ++) {
-                if(acc == num) return val.slice(i, j)
+        for(var i = 0; i < vals.length; i++) {
+            acc = vals[i];
+            for(var j = i+1; j < vals.length; j++) {
+                if(acc == num) return vals.slice(i, j)
                 if(acc > num) break;
-                acc += val[j];
+                acc += vals[j];
             }
         }
     }
 
     const solvePart1 = function (data, len) {
-        return data.slice(len).filter((v,i,s) => !isValid(data.slice(i, i+len), v))[0];
+        return data.slice(len).filter((v,i) => !isValid(data.slice(i, i+len), v))[0];
     }
 
     const solvePart2 = function (data, len) {
-        var val = solvePart1(data, len),
-            sum = areSum(data, val),
+        var num = solvePart1(data, len),
+            sum = areSum(data, num),
             sorted = sum.sort((a,b) => a > b ? 1 :-1);
         
         return sorted[0] + sorted[sorted.length-1];
@@ -71,8 +71,9 @@
     }
 
     const test = function () {
-        testPart1(parseInput(testInput));
-        testPart2(parseInput(testInput));
+        var data = parseInput(testInput);
+        testPart1(data);
+        testPart2(data);
     }
 
     const solve = function (input) {
