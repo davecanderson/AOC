@@ -22,11 +22,13 @@
     }
 
     const testPart1 = function (data) {
-
+        var a = solvePart1(data);
+        console.assert(a == a);
     }
 
     const testPart2 = function (data) {
-
+        var a = solvePart2(data);
+        console.assert(a == a);
     }
 
     const test = function () {
