@@ -19,7 +19,7 @@ L.LLLLLL.L
 L.LLLLL.LL`;
 
     const parseInput = function (input) {
-        return input.trim().split('\n').map(l => l);
+        return input.trim().split('\n');
     }
 
     const nextSeat1 = function (floor, x, y) {
@@ -35,12 +35,12 @@ L.LLLLL.LL`;
                 (floor[y+1]||'').charAt(x+1);
         
         switch(seat) {
-            case '.':
-                return '.';
             case 'L':
-               return !/#/.test(seats) ? '#' : seat;
+               if(!/#/.test(seats)) return '#';
             case '#':
-                return seats.replace(/[^#]/g,'').length > 3 ? 'L' : seat;
+                if(seats.replace(/[^#]/g,'').length > 3) return 'L'
+            default: 
+                return seat;
         }
     }
 
@@ -68,14 +68,14 @@ L.LLLLL.LL`;
                 getSeat(floor, x, y, {x: 1, y: 1})
             ;
         
-        switch(seat) {
-            case '.':
-                return '.';
-            case 'L':
-               return !/#/.test(seats) ? '#' : seat;
-            case '#':
-                return seats.replace(/[^#]/g,'').length > 4 ? 'L' : seat;
-        }
+            switch(seat) {
+                case 'L':
+                    if(!/#/.test(seats)) return '#';
+                case '#':
+                    if(seats.replace(/[^#]/g,'').length > 4) return 'L'
+                default: 
+                    return seat;
+            }
     }
 
     const iterate = function(floor, next) {
