@@ -2,6 +2,7 @@
 
 [Advent of Code](https://adventofcode.com/2020/about) is an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language you like. You don't need a computer science background to participate - just a little programming knowledge and some problem solving skills will get you pretty far. Nor do you need a fancy computer; every problem has a solution that completes in at most 15 seconds on ten-year-old hardware.
 
+* [AoC 2020](https://adventofcode.com/2021)
 * [AoC 2020](https://adventofcode.com/2020)
 * [AoC 2019](https://adventofcode.com/2019)
 * [AoC 2018](https://adventofcode.com/2018)
