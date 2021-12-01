@@ -1,4 +1,4 @@
-const year = "2020";
+const year = "2021";
 const day = "01";
 
 var LocalStorage = require("node-localstorage").LocalStorage;
@@ -26,12 +26,12 @@ const solvePart2 = function (data) {
 
 const testPart1 = function (data, answer) {
   var result = solvePart1(data);
-  console.assert(result === answer, `Part 1 answer ${result} is not ${answer}`);
+  console.assert(result === answer, `Part 1 Answer ${result} is not ${answer}`);
 };
 
 const testPart2 = function (data, answer) {
   var result = solvePart2(data);
-  console.assert(result === answer, `Part 2 answer ${result} is not ${answer}`);
+  console.assert(result === answer, `Part 2 Answer ${result} is not ${answer}`);
 };
 
 const test = function () {  
@@ -55,6 +55,8 @@ const solve = function () {
     console.log("Part 2 Answer: %s", solvePart2(data));
   }
 };
+
+console.log(`AoC ${year}/${day}`);
 
 if (args.includes("-test")) {
   test();
