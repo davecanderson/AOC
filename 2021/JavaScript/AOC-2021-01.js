@@ -17,21 +17,33 @@ const parseInput = function (input) {
 };
 
 const solvePart1 = function (data) {
-  return "";
+  var depth = 0;
+  for(var d = 0; d < data.length; d++) {
+    if(d > 0) {
+      depth += data[d-1] < data[d] ? 1 : 0;
+    }
+  }
+  return depth;
 };
 
 const solvePart2 = function (data) {
-  return "";
+  var depth = 0;
+  for(var d = 0; d < data.length; d++) {
+    if(d > 2) {
+      depth += data[d-3] < data[d] ? 1 : 0;
+    }
+  }
+  return depth;
 };
 
 const testPart1 = function (data, answer) {
   var result = solvePart1(data);
-  console.assert(result === answer, `Part 1 answer ${result} is not ${answer}`);
+  console.assert(result === answer, `Part 1 Answer ${result} is not ${answer}`);
 };
 
 const testPart2 = function (data, answer) {
   var result = solvePart2(data);
-  console.assert(result === answer, `Part 2 answer ${result} is not ${answer}`);
+  console.assert(result === answer, `Part 2 Answer ${result} is not ${answer}`);
 };
 
 const test = function () {  
@@ -55,6 +67,8 @@ const solve = function () {
     console.log("Part 2 Answer: %s", solvePart2(data));
   }
 };
+
+console.log(`AoC ${year}/${day}`);
 
 if (args.includes("-test")) {
   test();
