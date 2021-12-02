@@ -340,3 +340,6 @@ ASALocalRun/
 healthchecksdb
 
 node_modules
+
+Cargo.lock
+target/
