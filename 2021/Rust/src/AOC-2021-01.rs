@@ -4,8 +4,8 @@ use std::{
     path::Path,
 };
 
-const YEAR = 2021;
-const DAY = 1;
+const YEAR: i32 = 2021;
+const DAY: i32 = 1;
     
 fn lines_from_file(filename: impl AsRef<Path>) -> io::Result<Vec<String>> {
     BufReader::new(File::open(filename)?).lines().collect()
