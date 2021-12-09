@@ -38,14 +38,13 @@ const parseInput = function (input) {
 };
 
 const getNumber = function(input) {
-  let signal = input[0].map((s) => s.split('').sort().join('')),
+  let signal = input[0].map((s) => s.split('').sort()),
       reading = input[1].map((s) => s.split('').sort().join('')),
       numbers = {},
       one = [], 
       four = [];
 
   signal.forEach((s) => {
-    s = s.split('');
     switch(s.length) {
       case 2:
         numbers[s.join('')] = 1;
@@ -64,37 +63,36 @@ const getNumber = function(input) {
     } 
   });
   
-  var signalChars = signal.map((s) => s.split(''));
-  var counts = signalChars.flat().reduce((a,c) => { a[c] = a[c] || 0; ++a[c]; return a }, {});
-  var mostCommon = Object.keys(counts).filter((k) => counts[k] === 9)[0];
+  let counts = signal.flat().reduce((a,c) => { a[c] = a[c] || 0; ++a[c]; return a }, {});
+  let mostCommon = Object.keys(counts).filter((k) => counts[k] === 9)[0];
 
-  signalChars.filter((k) => k.length === 5 || k.length === 6).forEach((c) => {
-    let num = c.join('');
-    if(!c.includes(mostCommon)) {
+  signal.filter((k) => k.length === 5 || k.length === 6).forEach((chars) => {
+    let num = chars.join('');
+    if(!chars.includes(mostCommon)) {
       numbers[num] = 2;
     }
-    if(one.every((s) => c.includes(s)) && c.length === 5) {
+    if(one.every((c) => chars.includes(c)) && chars.length === 5) {
       numbers[num] = 3;
     }
-    if(!one.every((s) => c.includes(s)) && c.length === 6) {
+    if(!one.every((c) => chars.includes(c)) && chars.length === 6) {
       numbers[num] = 6;
     }
-    if(four.every((s) => c.includes(s)) && c.length === 6) {
+    if(four.every((c) => chars.includes(c)) && chars.length === 6) {
       numbers[num] = 9;
     }
   });
 
   console.assert(Object.keys(numbers).length === 8, "Failed to match 2, 3, 6 or 9")
 
-  var five = signal.filter((k) => k.length === 5 && !Object.keys(numbers).includes(k));
+  let five = signal.filter((s) => s.length === 5 && !Object.keys(numbers).includes(s.join('')));
   console.assert(five.length === 1, `Multiple matches for 5 ${five}`)
-  numbers[five[0]] = 5;
+  numbers[five[0].join('')] = 5;
 
-  var zero = signal.filter((k) => k.length === 6 && !Object.keys(numbers).includes(k));
+  let zero = signal.filter((s) => s.length === 6 && !Object.keys(numbers).includes(s.join('')));
   console.assert(zero.length === 1, `Multiple matches for 0 ${zero}`)
-  numbers[zero[0]] = 0;
+  numbers[zero[0].join('')] = 0;
 
-  var output = parseInt(reading.map((d) => numbers[d]).join(''));
+  let output = parseInt(reading.map((d) => numbers[d]).join(''));
 
   return output;
 }
