@@ -24,8 +24,8 @@ const factorial = function (n) {
 }
 
 const solvePart1 = function (data) {
-  var min = data.reduce((a,c) => c < a ? c : a, Infinity),
-      max = data.reduce((a,c) => c > a ? c : a, 0),
+  var min = Math.min(...data),
+      max = Math.max(...data),
       minFuel = Infinity;
 
   for(let f = min; f <= max; f++) {
@@ -36,8 +36,8 @@ const solvePart1 = function (data) {
 };
 
 const solvePart2 = function (data) {
-  var min = data.reduce((a,c) => c < a ? c : a, Infinity),
-      max = data.reduce((a,c) => c > a ? c : a, 0),
+  var min = Math.min(...data),
+      max = Math.max(...data),
       minFuel = Infinity;
 
   for(let f = min; f <= max; f++) {
