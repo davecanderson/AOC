@@ -22,12 +22,12 @@ const testDataP2 = { input: testData, answer: 61229 };
 const num1 = '  c  f '; // len = 2 *
 const num7 = 'a c  f '; // len = 3 *
 const num4 = ' bcd f '; // len = 4 *
-const num2 = 'a cde g'; // len = 5
-const num3 = 'a cd fg'; // len = 5
-const num5 = 'ab d fg'; // len = 5
-const num6 = 'ab defg'; // len = 6
-const num0 = 'abc efg'; // len = 6
-const num9 = 'abcd fg'; // len = 6
+const num2 = 'a cde g'; // len = 5 : only without f
+const num3 = 'a cd fg'; // len = 5 : only len 5 with all num1
+const num5 = 'ab d fg'; // len = 5 : last len 5 
+const num6 = 'ab defg'; // len = 6 : only len 6 without num1
+const num0 = 'abc efg'; // len = 6 : last len 6
+const num9 = 'abcd fg'; // len = 6 : only len 6 with all num4
 const num8 = 'abcdefg'; // len = 7 *
 
 const parseInput = function (input) {
@@ -64,31 +64,31 @@ const getNumber = function(input) {
     } 
   });
   
-  var candidates = signal.filter((k) => k.length === 5 || k.length === 6).map((s) => s.split(''));
-  var counts = candidates.flat().reduce((a,c) => { a[c] = a[c] || 0; ++a[c]; return a }, {});
-  var common = Object.keys(counts).filter((k) => counts[k] === 5);
+  var signalChars = signal.map((s) => s.split(''));
+  var counts = signalChars.flat().reduce((a,c) => { a[c] = a[c] || 0; ++a[c]; return a }, {});
+  var mostCommon = Object.keys(counts).filter((k) => counts[k] === 9)[0];
 
-  candidates.forEach((c) => {
-    if(common.some((s) => !c.includes(s)) && c.length === 5) {
-      numbers[c.join('')] = 2;
+  signalChars.filter((k) => k.length === 5 || k.length === 6).forEach((c) => {
+    let num = c.join('');
+    if(!c.includes(mostCommon)) {
+      numbers[num] = 2;
     }
     if(one.every((s) => c.includes(s)) && c.length === 5) {
-      numbers[c.join('')] = 3;
+      numbers[num] = 3;
     }
     if(!one.every((s) => c.includes(s)) && c.length === 6) {
-      numbers[c.join('')] = 6;
+      numbers[num] = 6;
+    }
+    if(four.every((s) => c.includes(s)) && c.length === 6) {
+      numbers[num] = 9;
     }
   });
 
-  console.assert(Object.keys(numbers).length === 7, "Failed to match 2, 3 or 6")
+  console.assert(Object.keys(numbers).length === 8, "Failed to match 2, 3, 6 or 9")
 
   var five = signal.filter((k) => k.length === 5 && !Object.keys(numbers).includes(k));
   console.assert(five.length === 1, `Multiple matches for 5 ${five}`)
   numbers[five[0]] = 5;
-
-  var nine = signal.filter((k) => k.length === 6 && four.every((s) => k.split('').includes(s)));
-  console.assert(nine.length === 1, `Multiple matches for 9 ${nine}`)
-  numbers[nine[0]] = 9;
 
   var zero = signal.filter((k) => k.length === 6 && !Object.keys(numbers).includes(k));
   console.assert(zero.length === 1, `Multiple matches for 0 ${zero}`)
