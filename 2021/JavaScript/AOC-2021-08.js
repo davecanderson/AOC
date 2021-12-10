@@ -1,12 +1,13 @@
 const year = "2021";
 const day = "08";
 
-var LocalStorage = require("node-localstorage").LocalStorage;
+let LocalStorage = require("node-localstorage").LocalStorage;
 
 const localStorage = new LocalStorage("./scratch");
 const args = process.argv.slice(2);
 
-const testData  = `be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
+const testData  = `
+be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
 edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc
 fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg
 fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | efabcd cedba gadfec cb
@@ -16,6 +17,7 @@ dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbc
 bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef
 egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
 gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce`;
+
 const testDataP1 = { input: testData, answer: 26 };
 const testDataP2 = { input: testData, answer: 61229 };
 
@@ -44,27 +46,28 @@ const getNumber = function(input) {
       one = [], 
       four = [];
 
-  signal.forEach((s) => {
-    switch(s.length) {
+  signal.forEach((chars) => {
+    let num = chars.join('');
+    switch(chars.length) {
       case 2:
-        numbers[s.join('')] = 1;
-        one = s;
+        numbers[num] = 1;
+        one = chars;
         break;
       case 3:
-        numbers[s.join('')] = 7;
+        numbers[num] = 7;
         break;
       case 4:
-        numbers[s.join('')] = 4;
-        four = s;
+        numbers[num] = 4;
+        four = chars;
         break;
       case 7:
-        numbers[s.join('')] = 8;
+        numbers[num] = 8;
         break;
     } 
   });
   
-  let counts = signal.flat().reduce((a,c) => { a[c] = a[c] || 0; ++a[c]; return a }, {});
-  let mostCommon = Object.keys(counts).filter((k) => counts[k] === 9)[0];
+  let counts = signal.flat().reduce((a,c) => { a[c] = a[c] || 0; ++a[c]; return a }, {}),
+      mostCommon = Object.keys(counts).filter((k) => counts[k] === 9)[0];
 
   signal.filter((k) => k.length === 5 || k.length === 6).forEach((chars) => {
     let num = chars.join('');
@@ -98,7 +101,7 @@ const getNumber = function(input) {
 }
 
 const solvePart1 = function (data) {
-  return data.map((d) => d[1].filter((c) => c.length === 2 ||c.length === 3 ||c.length === 4 ||c.length === 7 )).flat().length;
+  return data.map((d) => d[1].filter((c) => c.length === 2 || c.length === 3 || c.length === 4 || c.length === 7 )).flat().length;
 };
 
 const solvePart2 = function (data) {
