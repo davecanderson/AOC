@@ -1,10 +1,6 @@
-const year = "2021";
-const day = "08";
+let aoc = require('./AOC-2021.js');
 
-let LocalStorage = require("node-localstorage").LocalStorage;
-
-const localStorage = new LocalStorage("./scratch");
-const args = process.argv.slice(2);
+let solver = new aoc.Solver('08', '2021');
 
 const testData  = `
 be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
@@ -18,9 +14,6 @@ bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbg
 egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
 gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce`;
 
-const testDataP1 = { input: testData, answer: 26 };
-const testDataP2 = { input: testData, answer: 61229 };
-
 const num1 = '  c  f '; // len = 2 *
 const num7 = 'a c  f '; // len = 3 *
 const num4 = ' bcd f '; // len = 4 *
@@ -31,13 +24,6 @@ const num6 = 'ab defg'; // len = 6 : only len 6 without num1
 const num0 = 'abc efg'; // len = 6 : last len 6
 const num9 = 'abcd fg'; // len = 6 : only len 6 with all num4
 const num8 = 'abcdefg'; // len = 7 *
-
-const parseInput = function (input) {
-  return input
-    .trim()
-    .split("\n")
-    .map((i) => i.split('|').map((s) => s.trim().split(' ')));
-};
 
 const getNumber = function(input) {
   let signal = input[0].map((s) => s.split('').sort()),
@@ -100,11 +86,21 @@ const getNumber = function(input) {
   return output;
 }
 
-const solvePart1 = function (data) {
+solver.testData.P1 = { input: testData, answer: 26 };
+solver.testData.P2 = { input: testData, answer: 61229 };
+
+solver.parseInput = function (input) {
+  return input
+    .trim()
+    .split("\n")
+    .map((i) => i.split('|').map((s) => s.trim().split(' ')));
+};
+
+solver.solvePart1 = function (data) {
   return data.map((d) => d[1].filter((c) => c.length === 2 || c.length === 3 || c.length === 4 || c.length === 7 )).flat().length;
 };
 
-const solvePart2 = function (data) {
+solver.solvePart2 = function (data) {
   let result = [];
   data.forEach((d) => {
     result.push(getNumber(d));
@@ -113,48 +109,4 @@ const solvePart2 = function (data) {
   return result.reduce((a,c) => a + c);
 };
 
-const testPart1 = function (data, answer) {
-  var result = solvePart1(data);
-  console.assert(result === answer, `Part 1 Answer ${result} is not ${answer}`);
-};
-
-const testPart2 = function (data, answer) {
-  var number = getNumber(parseInput('acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf')[0]);
-  console.assert(number === 5353, `Part 2 Number ${number} is not 5353`);
-
-  var number = getNumber(parseInput('bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef')[0]);
-  console.assert(number === 1625, `Part 2 Number ${number} is not 1625`);
-
-  var result = solvePart2(data);
-  console.assert(result === answer, `Part 2 Answer ${result} is not ${answer}`);
-};
-
-const test = function () {  
-  if (args.includes("-p1")) {
-    testPart1(parseInput(testDataP1.input), testDataP1.answer);
-  }
-  if (args.includes("-p2")) {
-    testPart2(parseInput(testDataP2.input), testDataP2.answer);
-  }
-};
-
-const solve = function () {
-  const path = `${year}-${day}-input.txt`;
-  const data = parseInput(localStorage[path]);
-
-  if (args.includes("-p1")) {
-    console.log("Part 1 Answer: %s", solvePart1(data));
-  }
-
-  if (args.includes("-p2")) {
-    console.log("Part 2 Answer: %s", solvePart2(data));
-  }
-};
-
-console.log(`AoC ${year}/${day}`);
-
-if (args.includes("-test")) {
-  test();
-} else {
-  solve();
-}
+aoc.run(solver);

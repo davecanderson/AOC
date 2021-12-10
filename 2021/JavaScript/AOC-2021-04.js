@@ -1,10 +1,6 @@
-const year = "2021";
-const day = "04";
+let aoc = require('./AOC-2021.js');
 
-var LocalStorage = require("node-localstorage").LocalStorage;
-
-const localStorage = new LocalStorage("./scratch");
-const args = process.argv.slice(2);
+let solver = new aoc.Solver('04', '2021');
 
 const testData = `7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 
@@ -26,10 +22,15 @@ const testData = `7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,1
 22 11 13  6  5
  2  0 12  3  7`;
 
-const testDataP1 = { input: testData, answer: 4512 };
-const testDataP2 = { input: testData, answer: 1924 };
+const getScore = function (winner) {
+  let unmarked = winner.card.rows.flat().filter((n) => winner.numbers.indexOf(n) < 0);
+  return unmarked.reduce((a,c) => c + a, 0) * winner.numbers.pop();
+}
 
-const parseInput = function (input) {
+solver.testData.P1 = { input: testData, answer: 4512 };
+solver.testData.P2 = { input: testData, answer: 1924 };
+
+solver.parseInput = function (input) {
   var lines = input
     .trim()
     .split("\n");
@@ -64,12 +65,7 @@ const parseInput = function (input) {
   return data;
 };
 
-const getScore = function (winner) {
-  let unmarked = winner.card.rows.flat().filter((n) => winner.numbers.indexOf(n) < 0);
-  return unmarked.reduce((a,c) => c + a, 0) * winner.numbers.pop();
-}
-
-const solvePart1 = function (data) {
+solver.solvePart1 = function (data) {
   let getWinner = function() {
     let winner, n = 5;
     while (!winner && n < data.numbers.length) {
@@ -97,7 +93,7 @@ const solvePart1 = function (data) {
   return getScore(winner);
 };
 
-const solvePart2 = function (data) {
+solver.solvePart2 = function (data) {
   let getLoser = function() {
     let loser, winners = [], n = 5;
     while (!loser && n < data.numbers.length) {
@@ -131,42 +127,4 @@ const solvePart2 = function (data) {
   return getScore(loser);
 };
 
-const testPart1 = function (data, answer) {
-  var result = solvePart1(data);
-  console.assert(result === answer, `Part 1 Answer ${result} is not ${answer}`);
-};
-
-const testPart2 = function (data, answer) {
-  var result = solvePart2(data);
-  console.assert(result === answer, `Part 2 Answer ${result} is not ${answer}`);
-};
-
-const test = function () {  
-  if (args.includes("-p1")) {
-    testPart1(parseInput(testDataP1.input), testDataP1.answer);
-  }
-  if (args.includes("-p2")) {
-    testPart2(parseInput(testDataP2.input), testDataP2.answer);
-  }
-};
-
-const solve = function () {
-  const path = `${year}-${day}-input.txt`;
-  const data = parseInput(localStorage[path]);
-
-  if (args.includes("-p1")) {
-    console.log("Part 1 Answer: %s", solvePart1(data));
-  }
-
-  if (args.includes("-p2")) {
-    console.log("Part 2 Answer: %s", solvePart2(data));
-  }
-};
-
-console.log(`AoC ${year}/${day}`);
-
-if (args.includes("-test")) {
-  test();
-} else {
-  solve();
-}
+aoc.run(solver);

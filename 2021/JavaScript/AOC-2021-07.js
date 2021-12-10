@@ -1,20 +1,6 @@
-const year = "2021";
-const day = "07";
+let aoc = require('./AOC-2021.js');
 
-var LocalStorage = require("node-localstorage").LocalStorage;
-
-const localStorage = new LocalStorage("./scratch");
-const args = process.argv.slice(2);
-
-const testDataP1 = { input: "16,1,2,0,4,2,7,1,2,14", answer: 37 };
-const testDataP2 = { input: "16,1,2,0,4,2,7,1,2,14", answer: 168 };
-
-const parseInput = function (input) {
-  return input
-    .trim()
-    .split(",")
-    .map((i) => parseInt(i));
-};
+let solver = new aoc.Solver('07', '2021');
 
 const factorial = function (n) {
   if(n) {
@@ -23,7 +9,17 @@ const factorial = function (n) {
   return n;
 }
 
-const solvePart1 = function (data) {
+solver.testData.P1 = { input: "16,1,2,0,4,2,7,1,2,14", answer: 37 };
+solver.testData.P2 = { input: "16,1,2,0,4,2,7,1,2,14", answer: 168 };
+
+solver.parseInput = function (input) {
+  return input
+    .trim()
+    .split(",")
+    .map((i) => parseInt(i));
+};
+
+solver.solvePart1 = function (data) {
   var min = Math.min(...data),
       max = Math.max(...data),
       minFuel = Infinity;
@@ -35,7 +31,7 @@ const solvePart1 = function (data) {
   return minFuel;
 };
 
-const solvePart2 = function (data) {
+solver.solvePart2 = function (data) {
   var min = Math.min(...data),
       max = Math.max(...data),
       minFuel = Infinity;
@@ -47,42 +43,4 @@ const solvePart2 = function (data) {
   return minFuel;
 };
 
-const testPart1 = function (data, answer) {
-  var result = solvePart1(data);
-  console.assert(result === answer, `Part 1 Answer ${result} is not ${answer}`);
-};
-
-const testPart2 = function (data, answer) {
-  var result = solvePart2(data);
-  console.assert(result === answer, `Part 2 Answer ${result} is not ${answer}`);
-};
-
-const test = function () {  
-  if (args.includes("-p1")) {
-    testPart1(parseInput(testDataP1.input), testDataP1.answer);
-  }
-  if (args.includes("-p2")) {
-    testPart2(parseInput(testDataP2.input), testDataP2.answer);
-  }
-};
-
-const solve = function () {
-  const path = `${year}-${day}-input.txt`;
-  const data = parseInput(localStorage[path]);
-
-  if (args.includes("-p1")) {
-    console.log("Part 1 Answer: %s", solvePart1(data));
-  }
-
-  if (args.includes("-p2")) {
-    console.log("Part 2 Answer: %s", solvePart2(data));
-  }
-};
-
-console.log(`AoC ${year}/${day}`);
-
-if (args.includes("-test")) {
-  test();
-} else {
-  solve();
-}
+aoc.run(solver);
