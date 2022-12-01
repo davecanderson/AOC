@@ -6,6 +6,7 @@ The [r/adventofcode](https://www.reddit.com/r/adventofcode/) subreddit exists wi
 
 ## Events
 
+* [AoC 2022](https://adventofcode.com/2022)
 * [AoC 2021](https://adventofcode.com/2021)
 * [AoC 2020](https://adventofcode.com/2020)
 * [AoC 2019](https://adventofcode.com/2019)
