@@ -343,3 +343,4 @@ node_modules
 
 Cargo.lock
 target/
+scratch/

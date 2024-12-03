@@ -1,7 +1,6 @@
-let aoc = require('./AOC-2024.js');
+import { Solver, run } from './AOC-2024.mjs';
 
-let solver = new aoc.Solver('02', '2024');
-
+const solver = new Solver('02', '2024');
 const input =  `7 6 4 2 1
                 1 2 7 8 9
                 9 7 6 2 1
@@ -9,11 +8,11 @@ const input =  `7 6 4 2 1
                 8 6 4 4 1
                 1 3 6 7 9`;
 
-solver.testData.P1 = { 
+solver.test.p1 = { 
   input: input, 
   answer: 2
 };
-solver.testData.P2 = { 
+solver.test.p2 = { 
   input: input, 
   answer: 4 
 };
@@ -52,16 +51,16 @@ let isSafeAllowingOne = function(levels) {
 
 solver.solvePart1 = function (data) {
   data.forEach(l => {
-    console.log('%s %s', isSafe(l), l.join(' '));
+    //console.log('%s %s', isSafe(l), l.join(' '));
   });
   return data.filter(isSafe).length;
 };
 
 solver.solvePart2 = function (data) {
   data.forEach(l => {
-    console.log('%s %s', isSafeAllowingOne(l), l.join(' '));
+    //console.log('%s %s', isSafeAllowingOne(l), l.join(' '));
   });
   return data.filter(isSafeAllowingOne).length;
 };
 
-aoc.run(solver);
+run(solver);

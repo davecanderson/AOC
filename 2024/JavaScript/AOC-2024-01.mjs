@@ -1,6 +1,6 @@
-let aoc = require('./AOC-2024.js');
+import { Solver, run } from './AOC-2024.mjs';
 
-let solver = new aoc.Solver('01', '2024');
+const solver = new Solver('01', '2024');
 const input = `3   4
           4   3
           2   5
@@ -8,11 +8,11 @@ const input = `3   4
           3   9
           3   3`;
 
-solver.testData.P1 = { 
+solver.test.p1 = { 
   input: input, 
   answer: 11
 };
-solver.testData.P2 = { 
+solver.test.p2 = { 
   input: input, 
   answer: 31 
 };
@@ -53,4 +53,4 @@ solver.solvePart2 = function (data) {
   return s;
 };
 
-aoc.run(solver);
+run(solver);
