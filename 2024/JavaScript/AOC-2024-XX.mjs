@@ -1,6 +1,6 @@
 import { Solver, run } from './AOC-2024.mjs';
 
-const solver = new Solver('xx', '2024');
+const solver = new Solver('00', '2024');
 const input = ``;
 
 solver.test.p1.input = input;
@@ -13,11 +13,11 @@ solver.parseInputLine = function (s) {
 };
 
 solver.solvePart1 = function (data) {
-  return 0;
+  return data[0];
 };
 
 solver.solvePart2 = function (data) {
-  return 0;
+  return data[0];
 };
 
 run(solver);
